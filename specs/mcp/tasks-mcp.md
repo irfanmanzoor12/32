@@ -6,6 +6,8 @@
 
 ## Status: Specced — Ready to Build
 
+Implementation plan: [tasks-mcp-implementation.md](./tasks-mcp-implementation.md)
+
 ---
 
 ## Decisions Made
@@ -21,6 +23,7 @@
 | 7 | Storage | In-memory (dict) | Simplest first version, no DB |
 | 8 | Task lookup | `id` or `title` search | Agent never needs a separate fetch step |
 | 9 | Multi-user | `user_id` optional, default `"default"` | Mock multi-user without auth |
+| 10 | Timestamps | UTC, ISO 8601 with `Z` suffix | Consistent across all agents and timezones |
 
 ---
 
