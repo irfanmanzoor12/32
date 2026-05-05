@@ -20,6 +20,7 @@
 | 6 | Tool design | Intent-based | One call = one complete human intent |
 | 7 | Storage | In-memory (dict) | Simplest first version, no DB |
 | 8 | Task lookup | `id` or `title` search | Agent never needs a separate fetch step |
+| 9 | Multi-user | `user_id` optional, default `"default"` | Mock multi-user without auth |
 
 ---
 
@@ -28,6 +29,7 @@
 ```python
 Task:
   id          : str       # UUID, auto-generated
+  user_id     : str       # optional, default "default"
   title       : str       # required
   description : str       # optional, default ""
   status      : enum      # "todo" | "in_progress" | "done", default "todo"
@@ -63,6 +65,7 @@ The agent never needs a separate fetch step to act on a task.
 | Field | Type | Required | Default |
 |---|---|---|---|
 | `title` | string | yes | — |
+| `user_id` | string | no | `"default"` |
 | `description` | string | no | `""` |
 | `priority` | `"low"` \| `"medium"` \| `"high"` | no | `"medium"` |
 | `due_date` | ISO date string `"YYYY-MM-DD"` | no | `null` |
@@ -71,6 +74,7 @@ The agent never needs a separate fetch step to act on a task.
 ```json
 {
   "id": "uuid",
+  "user_id": "default",
   "title": "Buy groceries",
   "description": "",
   "status": "todo",
@@ -190,12 +194,13 @@ At least one of `new_title`, `description`, `priority` must be provided.
 **Input:**
 | Field | Type | Required | Notes |
 |---|---|---|---|
+| `user_id` | string | no | omit to return tasks for `"default"` user |
 | `status` | `"todo"` \| `"in_progress"` \| `"done"` | no | omit to return all |
 | `priority` | `"low"` \| `"medium"` \| `"high"` | no | omit to return all |
 | `due_today` | boolean | no | if `true`, returns tasks due on today's date |
 
-**Behaviour:** Returns all tasks matching the provided filters. Filters are AND-ed together.
-If no filters provided, returns all tasks.
+**Behaviour:** Returns tasks for the given `user_id` (defaults to `"default"`). Additional filters are AND-ed together.
+If no filters provided, returns all tasks for that user.
 
 **Output:**
 ```json
