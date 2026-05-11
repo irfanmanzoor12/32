@@ -1,3 +1,4 @@
+import os
 from contextlib import asynccontextmanager
 from typing import Optional
 from mcp.server.fastmcp import FastMCP
@@ -24,7 +25,12 @@ async def lifespan(server: FastMCP):
     yield {"store": _store}
 
 
-mcp = FastMCP("tasks_mcp", lifespan=lifespan)
+mcp = FastMCP(
+    "tasks_mcp",
+    lifespan=lifespan,
+    host=os.getenv("MCP_HOST", "127.0.0.1"),
+    port=int(os.getenv("MCP_PORT", "8000")),
+)
 
 
 @mcp.tool(
