@@ -44,7 +44,7 @@ User
 ├── agents/
 │   ├── tasks-manager/        # Main agent — talks to users
 │   └── appointment-booking/  # Books appointments, logs to Google Sheets
-├── mcp/
+├── services/
 │   └── tasks-mcp/            # MCP server: add, update, delete tasks
 ├── api/
 │   └── notifications/        # FastAPI service for sending notifications

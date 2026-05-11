@@ -53,6 +53,45 @@ This means:
 
 If it does not run in a container and cannot be described by a K8s manifest, it is not done.
 
+### Image Registry
+
+We use **GitHub Container Registry (ghcr.io)** as the image registry. The repository is public, so images are pushed and pulled publicly.
+
+Image naming convention:
+```
+ghcr.io/<github-org>/<service-name>:<tag>
+```
+
+Example:
+```
+ghcr.io/irfanmanzoor12/tasks-mcp:latest
+```
+
+### Repository Layout — Deployment Artifacts
+
+All Kubernetes manifests and Helm charts live under `deployment/` at the repository root, organised by component:
+
+```
+deployment/
+  services/
+    tasks-mcp.yaml      # Deployment + Service
+  helm/
+    <chart-name>/       # Helm charts
+```
+
+Do not scatter manifests next to source code. `deployment/` is the single source of truth for all cluster configuration.
+
+### Repository Layout — Dockerfiles
+
+Each service owns its `Dockerfile` at the root of its source directory:
+
+```
+services/tasks-mcp/Dockerfile       # MCP services
+service/<name>/Dockerfile      # other services
+```
+
+The Dockerfile must not live anywhere else (not in `deployment/`, not at the repo root). It belongs with the code it builds.
+
 ---
 
 ## 5. Multi-Agent Thinking
